@@ -23,6 +23,16 @@ process.on('SIGINT', () => {
   });
 });
 
+app.get('/sga', async (req, res) => {
+  try {
+    const sgaUsage = await database.getSGAUsage();
+    res.json(sgaUsage);
+  } catch (error) {
+    console.error('Error al obtener información del SGA:', error);
+    res.status(500).json({ error: 'Error al obtener información del SGA' });
+  }
+});
+
 // Iniciar el servidor en el puerto especificado
 app.listen(port, () => {
   console.log(`Servidor web en ejecución en http://localhost:${port}`);
