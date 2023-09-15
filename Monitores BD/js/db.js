@@ -1,11 +1,12 @@
 const oracledb = require('oracledb');
+require('dotenv').config(); // Carga las variables de entorno desde .env
 
 // Configuración de la conexión a la base de datos
 const dbConfig = {
-  user: 'sys',
-  password: 'root',
-  connectString: 'localhost:1521/FREE',
-  privilege: oracledb.SYSDBA // Especifica el privilegio como SYSDBA
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  connectString: process.env.DB_CONNECT_STRING,
+  privilege: oracledb.SYSDBA // o process.env.DB_PRIVILEGE según lo que necesites
 };
 
 async function connectToDatabase() {
@@ -38,9 +39,7 @@ async function getSGAUsage() {
     connection = await oracledb.getConnection();
 
     // Consulta SQL para obtener información sobre el SGA
-    const query = `
-      SELECT name, value FROM v$sga;
-    `;
+    const query = `SELECT name, value FROM v$sga`;
 
     // Ejecutar la consulta
     const result = await connection.execute(query);
