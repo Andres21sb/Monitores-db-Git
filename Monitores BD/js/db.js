@@ -39,7 +39,7 @@ async function getSGAUsage() {
     connection = await oracledb.getConnection();
 
     // Consulta SQL para obtener información sobre el SGA
-    const query = `SELECT name, value FROM v$sga`;
+    const query = `SELECT name, value /1024/1024 FROM v$sga`;
 
     // Ejecutar la consulta
     const result = await connection.execute(query);
