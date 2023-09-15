@@ -6,6 +6,7 @@ const port = 3000; // Elige el puerto que desees usar
 
 // Configurar Express para servir archivos estáticos desde la carpeta 'js'
 app.use('/js', express.static(__dirname + '/js'));
+app.use(express.static('public'));
 
 // Ruta para servir tu archivo HTML
 app.get('/', (req, res) => {
