@@ -1,6 +1,6 @@
 function renderPieChart(chartData) {
     // Extraer los nombres y valores del arreglo de datos
-    const labels = chartData.map((data) => `${data[0]} MB`); // Agrega " MB" al final de cada etiqueta
+    const labels = chartData.map((data) => data[0]);
     const values = chartData.map((data) => data[1]);
   
     // Obtener el elemento div donde se renderizará el gráfico (reemplaza 'divPastel' con el ID de tu div)
@@ -14,7 +14,7 @@ function renderPieChart(chartData) {
     new Chart(canvas, {
       type: 'pie',
       data: {
-        labels: labels,
+        labels: labels.map((label, index) => `${label} (${values[index].toFixed(2)} MB)`), // Agrega "MB" a las etiquetas
         datasets: [
           {
             data: values,
@@ -35,7 +35,7 @@ function renderPieChart(chartData) {
             color: 'white', // Color de los números
             formatter: (value) => {
               // Personaliza cómo se muestran los números aquí
-              return `${value.toFixed(2)} MB`; // Muestra el número con 2 decimales y " MB"
+              return value.toFixed(2); // Muestra el número con 2 decimales
             },
           },
         },
@@ -43,5 +43,4 @@ function renderPieChart(chartData) {
     });
 }
 
-  
   
