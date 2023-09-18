@@ -4,7 +4,7 @@ function renderPieChart(chartData) {
     const values = chartData.map((data) => data[1]);
   
     // Obtener el elemento div donde se renderizará el gráfico (reemplaza 'divPastel' con el ID de tu div)
-    const divPastel = document.getElementById('divPastel');
+    const divPastel = document.getElementById('divContainer');
   
     // Crear un elemento canvas y agregarlo al div
     const canvas = document.createElement('canvas');

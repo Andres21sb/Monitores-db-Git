@@ -25,8 +25,8 @@ process.on('SIGINT', () => {
 });
 
 //api sga
-const sga = require('./src/models/sga');
-app.use('/sga', sga);
+const sgaController = require('./backend/sgaController.js');
+app.use('/sga', sgaController);
 
 
 // Iniciar el servidor en el puerto especificado
