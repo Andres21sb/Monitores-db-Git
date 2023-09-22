@@ -1,46 +1,51 @@
-function renderPieChart(chartData) {
-    // Extraer los nombres y valores del arreglo de datos
-    const labels = chartData.map((data) => data[0]);
-    const values = chartData.map((data) => data[1]);
-  
-    // Obtener el elemento div donde se renderizará el gráfico (reemplaza 'divPastel' con el ID de tu div)
-    const divPastel = document.getElementById('divContainer');
-  
-    // Crear un elemento canvas y agregarlo al div
-    const canvas = document.createElement('canvas');
-    divPastel.appendChild(canvas);
-  
-    // Crear el gráfico de pastel en el canvas
-    new Chart(canvas, {
-      type: 'pie',
-      data: {
-        labels: labels.map((label, index) => `${label} (${values[index].toFixed(2)} MB)`), // Agrega "MB" a las etiquetas
-        datasets: [
-          {
-            data: values,
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.7)',
-              'rgba(54, 162, 235, 0.7)',
-              'rgba(255, 206, 86, 0.7)',
-              'rgba(75, 192, 192, 0.7)',
-            ],
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          datalabels: {
-            anchor: 'end',
-            align: 'start',
-            color: 'white', // Color de los números
-            formatter: (value) => {
-              // Personaliza cómo se muestran los números aquí
-              return value.toFixed(2); // Muestra el número con 2 decimales
-            },
+
+
+function renderLineChart(data) {
+  const timestamps = data.map((entry) => entry.calc.time); // Suponiendo que tienes una columna de marca de tiempo
+  const values = data.map((entry) => entry.calc.inUse); // Suponiendo que tienes una columna de valores
+  console.log(timestamps, values);
+
+  // Obtén el elemento div donde se renderizará el gráfico de líneas (reemplaza 'divContainer' con el ID de tu div)
+  const divLineChart = document.getElementById('divSga');
+
+  // Crea un elemento canvas y agrégalo al div
+  const canvas = document.createElement('canvas');
+  divLineChart.innerHTML = ' '; // Borra cualquier contenido anterior
+  divLineChart.appendChild(canvas);
+
+  // Crea el gráfico de líneas en el canvas
+  new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: timestamps, // Utiliza directamente las marcas de tiempo como etiquetas
+      datasets: [
+        {
+          label: 'SGA Usage',
+          data: values,
+          fill: false,
+          borderColor: 'rgba(75, 192, 192, 1)', // Color de la línea
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          // No especificamos 'type: "time"' ya que estamos utilizando las marcas de tiempo directamente
+          // Puedes ajustar la visualización de las etiquetas según tus necesidades
+          ticks: {
+            display: true, // Muestra las etiquetas en el eje x
+            autoSkip: true, // Puede ajustar esto según la cantidad de datos
+            maxTicksLimit: 10, // Límite máximo de etiquetas
           },
         },
+        y: {
+          beginAtZero: true,
+        },
       },
-    });
+    },
+  });
 }
 
-  

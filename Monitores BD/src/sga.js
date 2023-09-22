@@ -1,22 +1,34 @@
-// sga.js
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('SGA');
+  // Función para llamar a la API y renderizar el gráfico de líneas del SGA
+  let dataSGA = [];
+  
+  async function fetchAndRenderSGA() {
+    setInterval(async () => {
+      try {
+        const response = await fetch("/sga");
+        if (!response.ok) {
+          throw new Error("La solicitud no fue exitosa.");
+        }
 
-// Función para llamar a la API y renderizar el gráfico del SGA
-function fetchAndRenderSGA() {
-    fetch('/sga')
-      .then((response) => response.json())
-      .then((data) => {
-        renderPieChart(data);
-      })
-      .catch((error) => {
-        console.error('Error al obtener información del SGA:', error);
-      });
+        const data = await response.json();
+
+        // Agregar nuevos datos al array
+        dataSGA.push(data);
+
+        // Verificar si el array tiene más de 200 elementos
+        if (dataSGA.length > 200) {
+          // Eliminar las 10 primeras entradas
+          dataSGA.splice(0, 10);
+        }
+
+        renderLineChart(dataSGA);
+      } catch (error) {
+        console.error("Error al obtener información del SGA:", error);
+      }
+    }, 5000); // Actualiza cada 5 segundos
   }
-  
-  // Crea el botón del SGA y agrega el evento click
-  function createSGAButton() {
-    const sgaButton = document.createElement('button');
-    sgaButton.textContent = 'SGA';
-    sgaButton.addEventListener('click', fetchAndRenderSGA);
-    return sgaButton;
-  }
-  
+
+  // Función para renderizar el gráfico de líneas del SGA
+  fetchAndRenderSGA();
+});
