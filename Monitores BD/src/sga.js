@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let dataSGA = [];
   
   async function fetchAndRenderSGA() {
+    //renderizar el loader
+    renderLoader();
     setInterval(async () => {
       try {
         const response = await fetch("/sga");
@@ -22,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
           dataSGA.splice(0, 10);
         }
 
-        renderLineChart(dataSGA);
+        if(dataSGA.length>=1){
+          renderLineChart(dataSGA);
+        }
       } catch (error) {
         console.error("Error al obtener información del SGA:", error);
       }

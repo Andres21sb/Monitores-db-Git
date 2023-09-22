@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     divContainer.appendChild(divTS);
 
     divContainer.id = 'divContainer';
+    //add css class
+    divContainer.className = 'container';
     app.appendChild(divContainer);
   });
     

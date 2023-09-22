@@ -1,31 +1,40 @@
-
-
 function renderLineChart(data) {
   const timestamps = data.map((entry) => entry.calc.time); // Suponiendo que tienes una columna de marca de tiempo
   const values = data.map((entry) => entry.calc.inUse); // Suponiendo que tienes una columna de valores
-  console.log(timestamps, values);
 
   // Obtén el elemento div donde se renderizará el gráfico de líneas (reemplaza 'divContainer' con el ID de tu div)
-  const divLineChart = document.getElementById('divSga');
+  const divLineChart = document.getElementById("divSga");
+  divLineChart.className = 'line-chart-container';
+  //divLineChart.innerHTML = " ";
 
   // Crea un elemento canvas y agrégalo al div
-  const canvas = document.createElement('canvas');
-  divLineChart.innerHTML = ' '; // Borra cualquier contenido anterior
+  const canvas = document.createElement("canvas");
+  divLineChart.innerHTML = " "; // Borra cualquier contenido anterior
   divLineChart.appendChild(canvas);
 
+  // Define el valor de tu "High Water Mark"
+  const highWaterMark = Math.round(data[data.length-1].calc.fullSize * 0.8); // Redondea el valor al número entero más cercano
+ // console.log('HWM '+highWaterMark);
   // Crea el gráfico de líneas en el canvas
   new Chart(canvas, {
-    type: 'line',
+    type: "line",
     data: {
       labels: timestamps, // Utiliza directamente las marcas de tiempo como etiquetas
       datasets: [
         {
-          label: 'SGA Usage',
+          label: "SGA Usage",
           data: values,
           fill: false,
-          borderColor: 'rgba(75, 192, 192, 1)', // Color de la línea
+          borderColor: data[data.length-1].calc.inUse >= highWaterMark - 10 && data[data.length-1].calc.inUse <= highWaterMark + 10 ? "#FFA500" : (data[data.length-1].calc.inUse < highWaterMark - 10 ? "green" : "red"),
           borderWidth: 2,
-        },
+        },{
+          label: 'High Water Mark',
+          data: Array(timestamps.length).fill(highWaterMark),
+          borderColor: 'rgba(75, 192, 192, 1)',
+          fill: false,
+          borderWidth: 2,
+      }
+        
       ],
     },
     options: {
@@ -43,9 +52,10 @@ function renderLineChart(data) {
         },
         y: {
           beginAtZero: true,
+
+          max: data[0].calc.fullSize,
         },
       },
     },
   });
 }
-

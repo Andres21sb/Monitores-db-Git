@@ -1,0 +1,12 @@
+.container{
+    height: 100vh;
+    background-color: azure;
+}
+.sga-container{
+    margin: 0 auto;
+    width: max-content;
+    background-color: azure;
+}
+.line-chart-container{
+    height: 20%;
+}
