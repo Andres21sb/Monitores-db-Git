@@ -59,3 +59,7 @@ function renderLineChart(data) {
     },
   });
 }
+
+function renderTSChart(data){
+  
+}

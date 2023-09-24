@@ -98,7 +98,39 @@ getStats = async () => {
   }
 }
 
+getTablespaceStats = async () => {
+  let connection;
+  try{
+    connection = await oracledb.getConnection();
 
+    const query = `select tablespace_name, 
+    ROUND(SUM(bytes) / (1024*1024),2) as free_bytes,
+    ROUND(((max_size - (SUM(bytes)))/(1024*1024)), 2) as used_bytes,
+    ROUND(max_size / (1024*1024),2) as max_size
+  from (select tablespace_name, bytes from dba_free_space), (select max_size from dba_tablespaces) 
+  group by tablespace_name, max_size`;
+
+  const result = await connection.execute(query);
+  const tablespace_name = result.rows.at(0).at(0);
+  const free_bytes = result.rows.at(0).at(1);
+  const used_bytes = result.rows.at(0).at(2);
+  const max_size = result.rows.at(0).at(3);
+
+  return {tablespace_name, free_bytes, used_bytes, max_size};
+  }
+  catch(err){
+    console.error('Error al obtener información de los tablespaces: ', error);
+    throw error;
+  } finally {
+    if(connection){
+      try{
+        await connection.close();
+      } catch(error){
+        console.error('Error al cerrar la conexión: ', error);
+      }
+    }
+  }
+}
 
 
 module.exports = {
@@ -106,5 +138,6 @@ module.exports = {
   closeDatabase,
   getDatabaseCacheTimeAndSize,
   getStats,
+  getTablespaceStats
 };
 

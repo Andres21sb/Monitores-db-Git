@@ -33,6 +33,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000); // Actualiza cada 5 segundos
   }
 
+  async function fetchAndRenderTS(){
+    renderLoaderTS();
+    setInterval(async () => {
+      try {
+        const response = await fetch("/sga/tsstats");
+        if (!response.ok) {
+          throw new Error("La solicitud no fue exitosa.");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        renderTSChart(data);
+      } catch (error) {
+        console.error("Error al obtener información de tablespaces:", error);
+      }
+    }, 5000); // Actualiza cada 5 segundos
+  }
+
   // Función para renderizar el gráfico de líneas del SGA
   fetchAndRenderSGA();
+  fetchAndRenderTS();
 });
