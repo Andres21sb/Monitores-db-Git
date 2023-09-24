@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const database= require('../js/db.js');
+const database = require('../js/db.js');
 
 
 router.get('/', async (req, res) => {
@@ -21,8 +21,8 @@ router.get('/', async (req, res) => {
   const memoryInUse = (bufferTimeAndSize,stats) => {
     const totalAllocated=stats.set_msize/1024/1024;
     const block_size=stats.block_size/1024/1024;
-    //const inUse= stats.physical_reads*block_size;
-    const inUse= 840;
+    const inUse= stats.physical_reads*block_size;
+    //const inUse= 840;
     const freeMemory = bufferTimeAndSize.size -inUse;
     const time = bufferTimeAndSize.time;
     const fullSize= bufferTimeAndSize.size;
