@@ -4,7 +4,7 @@ function renderLineChart(data) {
 
   // Obtén el elemento div donde se renderizará el gráfico de líneas (reemplaza 'divContainer' con el ID de tu div)
   const divLineChart = document.getElementById("divSga");
-  divLineChart.className = 'line-chart-container';
+  divLineChart.className = "line-chart-container";
   //divLineChart.innerHTML = " ";
 
   // Crea un elemento canvas y agrégalo al div
@@ -13,8 +13,8 @@ function renderLineChart(data) {
   divLineChart.appendChild(canvas);
 
   // Define el valor de tu "High Water Mark"
-  const highWaterMark = Math.round(data[data.length-1].calc.fullSize * 0.8); // Redondea el valor al número entero más cercano
- // console.log('HWM '+highWaterMark);
+  const highWaterMark = Math.round(data[data.length - 1].calc.fullSize * 0.8); // Redondea el valor al número entero más cercano
+  console.log("HWM " + highWaterMark);
   // Crea el gráfico de líneas en el canvas
   new Chart(canvas, {
     type: "line",
@@ -22,19 +22,24 @@ function renderLineChart(data) {
       labels: timestamps, // Utiliza directamente las marcas de tiempo como etiquetas
       datasets: [
         {
-          label: "SGA Usage",
+          label: "SGA Usage (MB) -> "+data[data.length - 1].calc.inUse+" MB",
           data: values,
           fill: false,
-          borderColor: data[data.length-1].calc.inUse >= highWaterMark - 10 && data[data.length-1].calc.inUse <= highWaterMark + 10 ? "#FFA500" : (data[data.length-1].calc.inUse < highWaterMark - 10 ? "green" : "red"),
+          borderColor:
+            data[data.length - 1].calc.inUse >= highWaterMark - 50 && data[data.length - 1].calc.inUse < highWaterMark
+              ? "#FFA500"
+              : data[data.length - 1].calc.inUse > highWaterMark
+              ? "red"
+              : "green",
           borderWidth: 2,
-        },{
-          label: 'High Water Mark',
+        },
+        {
+          label: "High Water Mark (80%) -> "+highWaterMark+" MB",
           data: Array(timestamps.length).fill(highWaterMark),
-          borderColor: 'rgba(75, 192, 192, 1)',
+          borderColor: "rgba(75, 192, 192, 1)",
           fill: false,
           borderWidth: 2,
-      }
-        
+        },
       ],
     },
     options: {
