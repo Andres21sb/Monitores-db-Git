@@ -61,10 +61,12 @@ function renderLineChart(data) {
 }
 
 function renderHorizontalBarChart(data) {
-  const tablespaceNames = data.map((entry) => entry.stats.tablespace_name);
-  const usedBytes = data.map((entry) => entry.stats.used_bytes);
-  const freeBytes = data.map((entry) => entry.stats.free_bytes);
-  const maxSizes = data.map((entry) => entry.stats.max_size);
+  
+  const tablespaceNames = data.map((entry) => entry.tablespace_name);
+  const usedBytes = data.map((entry) => entry.used_bytes);
+  const freeBytes = data.map((entry) => entry.free_bytes);
+  const maxSizes = data.map((entry) => entry.max_size);
+  console.log(`---------->${tablespaceNames}`);
 
   // Obtén el elemento div donde se renderizará el gráfico de barras horizontales (reemplaza 'divContainer' con el ID de tu div)
   const divBarChart = document.getElementById("divTS");

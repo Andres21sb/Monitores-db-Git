@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
   router.get('/tsstats', async (req, res) => {
     try {
       const stats = await database.getTablespaceStats();
-      res.json({stats});
+      res.json(stats);
     } catch (error) {
       console.error('Error al obtener información de tablespaces: ', error);
       res.status(500).json({ error: 'Error al obtener información de tablespaces' });

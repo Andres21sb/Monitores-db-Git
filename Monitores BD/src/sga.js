@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const data = await response.json();
-        dataTS.push(data);
+        //dataTS.push(data);
         console.log(data);
-        renderHorizontalBarChart(dataTS);
+        renderHorizontalBarChart(data);
       } catch (error) {
         console.error("Error al obtener información de tablespaces:", error);
       }
