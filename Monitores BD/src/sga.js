@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   async function fetchAndRenderSGA() {
     //renderizar el loader
-    renderLoader();
+    renderLoader('divSgaGraph');
     setInterval(async () => {
       try {
         const response = await fetch("/sga");
@@ -18,10 +18,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Agregar nuevos datos al array
         dataSGA.push(data);
 
-        // Verificar si el array tiene más de 200 elementos
-        if (dataSGA.length > 200) {
+        // Verificar si el array tiene más de 50 elementos
+        if (dataSGA.length > 50) {
           // Eliminar las 10 primeras entradas
           dataSGA.splice(0, 10);
+        }
+
+        //verificar el inUse
+        if(dataSGA[dataSGA.length-1].calc.inUse>dataSGA[dataSGA.length-1].calc.fullSize*0.8){
+          //renderizar el boton
+          renderTabla();
+        }else{
+          //unrender rabla
+          unrenderTabla();
         }
 
         if(dataSGA.length>=1){

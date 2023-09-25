@@ -1,6 +1,6 @@
-function renderLoader() {
+function renderLoader(id) {
     console.log('Loader');
-    const divSga = document.getElementById("divSga");
+    const divSga = document.getElementById(id);
      //add css class
      divSga.className = 'sga-container';
     // Limpia el contenido actual del div

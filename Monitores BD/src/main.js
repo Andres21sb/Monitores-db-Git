@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     pSga.innerHTML = 'SGA';
     divSga.appendChild(pSga);
     divContainer.appendChild(divSga);
+    divSgaGraph = document.createElement('div');
+    divSgaGraph.id = 'divSgaGraph';
+    divSga.appendChild(divSgaGraph);
 
     const divTS = document.createElement('div');
     divTS.id = 'divTS';
