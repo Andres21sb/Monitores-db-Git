@@ -29,12 +29,12 @@ async function createTablesAndInsertData() {
 
     // Crear 100 tablas nuevas (cambiar el nombre de la tabla y la estructura según tus necesidades)
     for (let i = 1; i <= 100; i++) {
-      const tableName = `TABLE_${'a'.repeat(i)}`;
+      const tableName = `TABLE_${'k'.repeat(i)}`;
       const createTableSQL = `
           CREATE TABLE ${tableName} (
             ID NUMBER PRIMARY KEY,
             NAME VARCHAR2(50)
-          )
+          ) tablespace TBS3
         `;
 
       // Ejecutar la consulta DDL para crear la tabla

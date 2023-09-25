@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 console.log('TS');
 async function fetchAndRenderTS(){
-    renderLoaderTS();
+    //renderLoader("divTS");
     setInterval(async () => {
       try {
         const response = await fetch("/ts/tsstats");
+        
         if (!response.ok) {
           throw new Error("La solicitud no fue exitosa.");
         }
@@ -13,10 +14,11 @@ async function fetchAndRenderTS(){
         //dataTS.push(data);
         console.log(data);
         renderHorizontalBarChart(data);
+        renderTablaTS();
       } catch (error) {
         console.error("Error al obtener información de tablespaces:", error);
       }
-    }, 10000); // Actualiza cada 5 segundos
+    }, 5000); // Actualiza cada 5 segundos
   }
 
   fetchAndRenderTS();

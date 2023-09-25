@@ -15,4 +15,15 @@ router.get("/tsstats", async (req, res) => {
   }
 });
 
+router.get("/tables", async (req, res) => {
+  try {
+    const tables = await database.getTablesInfo();
+    console.log(tables);
+    res.json(tables);
+  } catch (error) {
+    console.error("Error al obtener información de tablas: ", error);
+    res.status(500).json({ error: "Error al obtener información de tablas" });
+  }
+});
+
 module.exports = router;

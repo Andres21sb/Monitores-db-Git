@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const pTS = document.createElement('p');
     pTS.innerHTML = 'TS';
     divTS.appendChild(pTS);
+    
+    divGraphTS = document.createElement('div');
+    divGraphTS.id = 'divGraphTS';
+    divTS.appendChild(divGraphTS);
     divContainer.appendChild(divTS);
 
     divContainer.id = 'divContainer';

@@ -4,10 +4,10 @@ function renderHorizontalBarChart(data) {
     const usedBytes = data.map((entry) => entry.used_bytes);
     const freeBytes = data.map((entry) => entry.free_bytes);
     const maxSizes = data.map((entry) => entry.max_size);
-    console.log(`---------->${tablespaceNames}`);
+    console.log(`---------->${maxSizes}`);
   
     // Obtén el elemento div donde se renderizará el gráfico de barras horizontales (reemplaza 'divContainer' con el ID de tu div)
-    const divBarChart = document.getElementById("divTS");
+    const divBarChart = document.getElementById("divGraphTS");
     divBarChart.className = 'horizontal-bar-chart-container';
     divBarChart.innerHTML = " "; // Borra cualquier contenido anterior
   
@@ -40,7 +40,7 @@ function renderHorizontalBarChart(data) {
             data: maxSizes,
             borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 2,
-            type: "line",
+            type: "bubble",
             fill: false,
           },
         ],
@@ -61,4 +61,72 @@ function renderHorizontalBarChart(data) {
     });
     
   }
+
+  async function renderTablaTS() {
+    const divTS = document.getElementById("divTS");
+    
+    // Intenta recuperar el elemento divButton
+    let divTablesTS = document.getElementById("divTablesTS");
+  
+    // Si divButton no existe, créalo
+    if (!divTablesTS) {
+      divTablesTS = document.createElement("div");
+      divTablesTS.id = "divTablesTS";
+      divTS.appendChild(divTablesTS);
+    }
+  
+    // Resto del código para crear el botón
+    divTablesTS.innerHTML = " ";
+    renderLoader("divTablesTS");
+  
+    //fetch for /sga/sqls
+    const response2 = await fetch("/ts/tables");
+
+    if (!response2.ok) {
+        throw new Error("La solicitud no fue exitosa.");
+    }
+    const data = await response2.json();
+    //render table
+    renderTablaData(data);
+  }
+  
+  renderTablaData = (data) => {
+    //create table with data
+    const table = document.createElement("table");
+    //table.className = "fixed_headers";s
+    table.innerHTML = `
+  <thead>
+  
+  <tr>
+    <th scope="col">OWNER</th>
+    <th scope="col">TABLE_NAME</th>
+    <th scope="col">TAMAÑO (MB)</th>
+    <th scope="col">TABLESPACE_NAME</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  `;
+    //add data to table
+    data.forEach((element) => {
+      table.innerHTML += `
+    <tr>
+    <td>${element.owner}</td>
+    <td>${element.table_name}</td>
+    <td>${element.tam}</td>
+    <td>${element.tablespace_name}</td>
+  </tr>
+    `;
+    });
+    //add table to divButton
+    divTablesTS.innerHTML = " ";
+    divTablesTS.className = "table-sqls";
+    divTablesTS.appendChild(table);
+  };
+  
+  unrenderTabla = () => {
+    if(document.getElementById("divButton")){
+      document.getElementById("divButton").remove();
+    }
+  };
   

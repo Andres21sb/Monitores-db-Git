@@ -193,6 +193,38 @@ getTablespaceStats = async () => {
   }
 }
 
+getTablesInfo = async () => {
+  let connection;
+  try{
+    connection = await oracledb.getConnection();
+
+    const query = `WITH RankedTables AS (
+      SELECT t.owner, t.table_name, s.bytes / 1024 / 1024 AS "Tamaño (MB)",
+             s.tablespace_name,
+             ROW_NUMBER() OVER (PARTITION BY s.tablespace_name ORDER BY s.bytes DESC) AS rn
+      FROM dba_segments s
+      INNER JOIN dba_tables t ON s.segment_name = t.table_name
+      WHERE s.segment_type = 'TABLE'
+    )
+    SELECT owner, table_name, "Tamaño (MB)", tablespace_name
+    FROM RankedTables
+    WHERE rn = 1`;
+
+  const result = await connection.execute(query);
+
+  let res = result.rows.reduce((acc, curr,) => [...acc, {owner: curr.at(0), 
+                                                        table_name: curr.at(1), 
+                                                        tam: curr.at(2), 
+                                                        tablespace_name: curr.at(3)}], [])
+  
+  return res;
+}
+catch(err){
+  console.error('Error al obtener información de los tablespaces: ', error);
+  throw error;
+}
+};
+
 
 module.exports = {
   connectToDatabase,
@@ -200,5 +232,6 @@ module.exports = {
   getDatabaseCacheTimeAndSize,
   get10SQLs,
   getStats,
-  getTablespaceStats
+  getTablespaceStats,
+  getTablesInfo
 };
