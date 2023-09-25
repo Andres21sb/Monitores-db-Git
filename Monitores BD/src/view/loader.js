@@ -16,7 +16,7 @@ function renderLoader() {
   
   function renderLoaderTS(){
     const divTS = document.getElementById("divTS");
-    divTS.className = 'ts-container';
+    divTS.className = 'horizontal-bar-chart-container';
     divTS.innerHTML = "";
 
     const loaderSpan = document.createElement("span");

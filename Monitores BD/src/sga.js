@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('SGA');
   // Función para llamar a la API y renderizar el gráfico de líneas del SGA
   let dataSGA = [];
+  let dataTS = [];
+  
   
   async function fetchAndRenderSGA() {
     //renderizar el loader
@@ -43,8 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const data = await response.json();
+        dataTS.push(data);
         console.log(data);
-        renderTSChart(data);
+        renderHorizontalBarChart(dataTS);
       } catch (error) {
         console.error("Error al obtener información de tablespaces:", error);
       }
