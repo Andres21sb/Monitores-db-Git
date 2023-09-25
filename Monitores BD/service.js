@@ -29,8 +29,8 @@ const sgaController = require('./backend/sgaController.js');
 app.use('/sga', sgaController);
 
 //api tsstats
-const tsController = require('./backend/sgaController.js');
-app.use('/tsstats', tsController);
+const tsController = require('./backend/tsController.js');
+app.use('/ts', tsController);
 
 
 // Iniciar el servidor en el puerto especificado
