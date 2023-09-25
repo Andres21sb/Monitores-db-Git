@@ -16,7 +16,7 @@ async function fetchAndRenderTS(){
       } catch (error) {
         console.error("Error al obtener información de tablespaces:", error);
       }
-    }, 5000); // Actualiza cada 5 segundos
+    }, 10000); // Actualiza cada 5 segundos
   }
 
   fetchAndRenderTS();

@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         console.error("Error al obtener información del SGA:", error);
       }
-    }, 10000); // Actualiza cada 5 segundos
+    }, 5000); // Actualiza cada 5 segundos
   }
 
   // Función para renderizar el gráfico de líneas del SGA
