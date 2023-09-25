@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (error) {
         console.error("Error al obtener información de tablespaces:", error);
       }
-    }, 5000); // Actualiza cada 5 segundos
+    }, 10000); // Actualiza cada 5 segundos
   }
 
   // Función para renderizar el gráfico de líneas del SGA
