@@ -163,18 +163,13 @@ getTablespaceStats = async () => {
     connection = await oracledb.getConnection();
 
     const query = `select tablespace_name, 
-    ROUND(SUM(bytes) / (1024*1024),2) as free_bytes,
-    ROUND(((max_size - (SUM(bytes)))/(1024*1024)), 2) as used_bytes,
-    ROUND(max_size / (1024*1024),2) as max_size
-  from (select tablespace_name, bytes from dba_free_space), (select max_size from dba_tablespaces)
-  group by tablespace_name, max_size`;
+    ROUND(user_bytes / (1024*1024),2) as free_bytes,
+    ROUND(((bytes - user_bytes)/(1024*1024)), 2) as used_bytes,
+    ROUND(bytes / (1024*1024),2) as max_size
+  from (select tablespace_name, bytes, user_bytes from dba_data_files)
+  group by tablespace_name, user_bytes, bytes`;
 
   const result = await connection.execute(query);
-  // console.log(result);
-  // const tablespace_name = result.rows.at(0).at(0);
-  // const free_bytes = result.rows.at(0).at(1);
-  // const used_bytes = result.rows.at(0).at(2);
-  // const max_size = result.rows.at(0).at(3);
 
   let res = result.rows.reduce((acc, curr,) => [...acc, {tablespace_name: curr.at(0), 
                                                         free_bytes: curr.at(1), 
