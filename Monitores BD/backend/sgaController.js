@@ -1,19 +1,33 @@
 const express = require("express");
 const router = express.Router();
-const database = require("../js/db.js");
+const database = require('../js/db.js');
 
-router.get("/", async (req, res) => {
-  try {
-    const bufferTimeAndSize = await database.getDatabaseCacheTimeAndSize();
-    const stats = await database.getStats();
-    const calc = memoryInUse(bufferTimeAndSize, stats);
-    console.log(calc);
-    res.json({ calc });
-  } catch (error) {
-    console.error("Error al obtener información del SGA:", error);
-    res.status(500).json({ error: "Error al obtener información del SGA" });
-  }
-});
+
+router.get('/', async (req, res) => {
+    try {
+      const bufferTimeAndSize = await database.getDatabaseCacheTimeAndSize();
+      const stats = await database.getStats();
+      const calc = memoryInUse(bufferTimeAndSize,stats);
+      console.log(calc);
+      res.json({calc});
+    } catch (error) {
+      console.error('Error al obtener información del SGA:', error);
+      res.status(500).json({ error: 'Error al obtener información del SGA' });
+    }
+  });
+
+  router.get('/tsstats', async (req, res) => {
+    try {
+      const stats = await database.getTablespaceStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Error al obtener información de tablespaces: ', error);
+      res.status(500).json({ error: 'Error al obtener información de tablespaces' });
+    }
+  });
+
+
+
 //funcion para calcular tamaño de buffer usado
 const memoryInUse = (bufferTimeAndSize, stats) => {
   const totalAllocated = stats.set_msize / 1024 / 1024;

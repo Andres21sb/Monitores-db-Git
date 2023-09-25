@@ -78,6 +78,7 @@ getStats = async () => {
     // Ejecutar la consulta
     const result = await connection.execute(query);
     // Devolver el resultado de la consulta
+    
     const set_msize = result.rows.at(0).at(0);
     const cnum_repl = result.rows.at(0).at(1);
     const block_size = result.rows.at(0).at(2);
@@ -155,10 +156,54 @@ async function get10SQLs() {
     }
   }
 }
+
+getTablespaceStats = async () => {
+  let connection;
+  try{
+    connection = await oracledb.getConnection();
+
+    const query = `select tablespace_name, 
+    ROUND(SUM(bytes) / (1024*1024),2) as free_bytes,
+    ROUND(((max_size - (SUM(bytes)))/(1024*1024)), 2) as used_bytes,
+    ROUND(max_size / (1024*1024),2) as max_size
+  from (select tablespace_name, bytes from dba_free_space), (select max_size from dba_tablespaces)
+  group by tablespace_name, max_size`;
+
+  const result = await connection.execute(query);
+  // console.log(result);
+  // const tablespace_name = result.rows.at(0).at(0);
+  // const free_bytes = result.rows.at(0).at(1);
+  // const used_bytes = result.rows.at(0).at(2);
+  // const max_size = result.rows.at(0).at(3);
+
+  let res = result.rows.reduce((acc, curr,) => [...acc, {tablespace_name: curr.at(0), 
+                                                        free_bytes: curr.at(1), 
+                                                        used_bytes: curr.at(2), 
+                                                        max_size: curr.at(3)}], [])
+
+
+  return res;
+  }
+  catch(err){
+    console.error('Error al obtener información de los tablespaces: ', error);
+    throw error;
+  } finally {
+    if(connection){
+      try{
+        await connection.close();
+      } catch(error){
+        console.error('Error al cerrar la conexión: ', error);
+      }
+    }
+  }
+}
+
+
 module.exports = {
   connectToDatabase,
   closeDatabase,
   getDatabaseCacheTimeAndSize,
   get10SQLs,
   getStats,
+  getTablespaceStats
 };

@@ -28,6 +28,10 @@ process.on('SIGINT', () => {
 const sgaController = require('./backend/sgaController.js');
 app.use('/sga', sgaController);
 
+//api tsstats
+const tsController = require('./backend/sgaController.js');
+app.use('/tsstats', tsController);
+
 
 // Iniciar el servidor en el puerto especificado
 app.listen(port, () => {
