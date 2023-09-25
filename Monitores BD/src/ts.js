@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 console.log('TS');
 async function fetchAndRenderTS(){
-    //renderLoader("divTS");
+    renderLoader("divGraphTS");
     setInterval(async () => {
       try {
         const response = await fetch("/ts/tsstats");
