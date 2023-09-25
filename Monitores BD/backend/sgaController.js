@@ -20,7 +20,7 @@ const memoryInUse = (bufferTimeAndSize, stats) => {
   const block_size = stats.block_size;
   console.log("Physical -> " + stats.physical_reads);
   const inUse= stats.physical_reads*block_size;
-  //const inUse = 360; // PARA PRUEBAS DE FRONTEND
+  //const inUse = 860; // PARA PRUEBAS DE FRONTEND
   const freeMemory = bufferTimeAndSize.size - inUse;
   const time = bufferTimeAndSize.time;
   const fullSize = bufferTimeAndSize.size;
